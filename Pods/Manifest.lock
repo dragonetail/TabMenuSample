@@ -1,0 +1,99 @@
+PODS:
+  - CyaneaOctopus (0.3.1)
+  - DataCompression (3.0.0)
+  - Eureka (4.3.0)
+  - FAPanels (1.0.2)
+  - FLEX (2.4.0)
+  - GesturePassword (2.0.3)
+  - GRDB.swift (3.5.0)
+  - ImageIOSwift_F2 (0.6.2)
+  - ObjcExceptionBridging (6.1.0):
+    - ObjcExceptionBridging/ObjcExceptionBridging (= 6.1.0)
+  - ObjcExceptionBridging/ObjcExceptionBridging (6.1.0)
+  - PureLayout (3.1.4)
+  - SwiftBaseBootstrap (0.1.6):
+    - PureLayout (~> 3.1.4)
+  - SwiftEventBus (3.0.1)
+  - SwiftPagingTabView (0.1.7):
+    - PureLayout (~> 3.1.4)
+    - SwiftBaseBootstrap
+  - SwiftyJSON (4.2.0)
+  - SwipeSelectingCollectionView2 (0.1.8)
+  - XCGLogger (6.1.0):
+    - XCGLogger/Core (= 6.1.0)
+  - XCGLogger/Core (6.1.0):
+    - ObjcExceptionBridging
+
+DEPENDENCIES:
+  - CyaneaOctopus (from `../LocalPods/CyaneaOctopus/`)
+  - DataCompression (from `../LocalPods/DataCompression/`)
+  - Eureka (from `../LocalPods/Eureka/`)
+  - FAPanels (from `../LocalPods/FAPanels/`)
+  - FLEX (from `../LocalPods/FLEX/`)
+  - GesturePassword (from `../LocalPods/GesturePassword/`)
+  - GRDB.swift (from `../LocalPods/GRDB.swift/`)
+  - ImageIOSwift_F2 (from `../LocalPods/ImageIOSwift_F2/`)
+  - ObjcExceptionBridging (from `../LocalPods/XCGLogger/`)
+  - PureLayout (from `../LocalPods/PureLayout/`)
+  - SwiftBaseBootstrap (from `../LocalPods/SwiftBaseBootstrap/`)
+  - SwiftEventBus (from `../LocalPods/SwiftEventBus/`)
+  - SwiftPagingTabView (from `../LocalPods/SwiftPagingTabView/`)
+  - SwiftyJSON (from `../LocalPods/SwiftyJSON/`)
+  - SwipeSelectingCollectionView2 (from `../LocalPods/SwipeSelectingCollectionView2/`)
+  - XCGLogger (from `../LocalPods/XCGLogger/`)
+
+EXTERNAL SOURCES:
+  CyaneaOctopus:
+    :path: "../LocalPods/CyaneaOctopus/"
+  DataCompression:
+    :path: "../LocalPods/DataCompression/"
+  Eureka:
+    :path: "../LocalPods/Eureka/"
+  FAPanels:
+    :path: "../LocalPods/FAPanels/"
+  FLEX:
+    :path: "../LocalPods/FLEX/"
+  GesturePassword:
+    :path: "../LocalPods/GesturePassword/"
+  GRDB.swift:
+    :path: "../LocalPods/GRDB.swift/"
+  ImageIOSwift_F2:
+    :path: "../LocalPods/ImageIOSwift_F2/"
+  ObjcExceptionBridging:
+    :path: "../LocalPods/XCGLogger/"
+  PureLayout:
+    :path: "../LocalPods/PureLayout/"
+  SwiftBaseBootstrap:
+    :path: "../LocalPods/SwiftBaseBootstrap/"
+  SwiftEventBus:
+    :path: "../LocalPods/SwiftEventBus/"
+  SwiftPagingTabView:
+    :path: "../LocalPods/SwiftPagingTabView/"
+  SwiftyJSON:
+    :path: "../LocalPods/SwiftyJSON/"
+  SwipeSelectingCollectionView2:
+    :path: "../LocalPods/SwipeSelectingCollectionView2/"
+  XCGLogger:
+    :path: "../LocalPods/XCGLogger/"
+
+SPEC CHECKSUMS:
+  CyaneaOctopus: 24d788bc5a3d7121effa4326db005b3e3a388611
+  DataCompression: 633c9074008230ad780e4c19eafe44fd0da1f864
+  Eureka: 0769007f9ab4c260245b6f3aa7fc0ba1fa5dad76
+  FAPanels: f2c79774e25bb1bfe635ebdf66ee77aa9a674ec3
+  FLEX: f97c56d90e07ae22e03c8e8caffc91b386c2577d
+  GesturePassword: 1d5820f89d15572eacbdde49f32eb88d01c7f63e
+  GRDB.swift: 237e5636cc22760f8a923556d550c685038b8ff6
+  ImageIOSwift_F2: 95e83b074c3b2203fb8ee7b7224422fbb380d7bc
+  ObjcExceptionBridging: 0095713243612466919d5103db4b9fbbd67cf7c1
+  PureLayout: d7d327ebfd17fb2cf186b3923f90a963a3450733
+  SwiftBaseBootstrap: 2ec18481ee88096588c6d571ec7be1c0f1029579
+  SwiftEventBus: 388bdc598eebdc56f56dd19c216d35cc3f3c569b
+  SwiftPagingTabView: 1e19e9e6dd24b945c49cff286027e7efe7ef2433
+  SwiftyJSON: 84f790ba9f675732a6b32cea6ff20dbd0bb77e6f
+  SwipeSelectingCollectionView2: 9dc93e20a0c72385891e624da956f6ca2d84f3d9
+  XCGLogger: 5b68ac166f90018397e699dc809c8f9b52d4534b
+
+PODFILE CHECKSUM: 4d5428b8b183a64f13ecb045dbb810cef7f51a3f
+
+COCOAPODS: 1.5.3
