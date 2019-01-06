@@ -22,7 +22,7 @@ class LeftTabMenuViewController: BaseViewControllerWithAutolayout {
     }
 
     override func setupAndComposeView() {
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = UIColor.black
         self.view.isMultipleTouchEnabled = true
 
         [label].forEach {

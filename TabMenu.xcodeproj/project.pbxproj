@@ -80,8 +80,8 @@
 		D9B7815D21CB6DE100BC156E /* TabMenu */ = {
 			isa = PBXGroup;
 			children = (
-				D9B7817021CB700000BC156E /* LeftTabMenuViewController.swift */,
 				D9B7815E21CB6DE100BC156E /* AppDelegate.swift */,
+				D9B7817021CB700000BC156E /* LeftTabMenuViewController.swift */,
 				D9B7816021CB6DE100BC156E /* ViewController.swift */,
 				D9B7816221CB6DE100BC156E /* Main.storyboard */,
 				D9B7816521CB6DE200BC156E /* Assets.xcassets */,
@@ -389,6 +389,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7G352XQC3N;
 				INFOPLIST_FILE = TabMenu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -407,6 +408,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7G352XQC3N;
 				INFOPLIST_FILE = TabMenu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
