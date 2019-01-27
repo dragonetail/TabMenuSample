@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FAPanels
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,10 +19,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         if let window = self.window {
             window.backgroundColor = UIColor.white
-
-            let rootController = FAPanelController()
-            window.rootViewController = rootController
-            rootController.center(ViewController()).left(LeftTabMenuViewController())
+            
+//            let rootController = FAPanelController()
+////            rootController.configs.panFromEdge  = true
+////            rootController.configs.canLeftSwipe  = false
+//            rootController.leftPanelPosition = .back
+//            window.rootViewController = rootController
+//            rootController.center(ViewController())
+//                .left(LeftTabMenuViewController())
+//            window.makeKeyAndVisible()
+            
+            let sideMenuController = SideMenuController(contentViewController: ViewController(),
+                               menuViewController: LeftTabMenuViewController())
+            window.rootViewController = sideMenuController
+            
+            sideMenuController.configs.menuWidth = 500
+            sideMenuController.configs.statusBarBehavior = .hideOnMenu
+            sideMenuController.configs.position = .above
+            sideMenuController.configs.direction = .left
+            sideMenuController.configs.enablePanGesture = true
+            sideMenuController.configs.supportedOrientations = .portrait
+            sideMenuController.configs.shouldRespectLanguageDirection = true
             window.makeKeyAndVisible()
         }
 

@@ -10,10 +10,9 @@ import SwiftBaseBootstrap
 import PureLayout
 
 class LeftTabMenuViewController: BaseViewControllerWithAutolayout {
-    lazy var label: UILabel = {
-        let label = UILabel()
-        label.text = "Hi~"
-        return label
+    lazy var leftTabMenuView: LeftTabMenuView = {
+        let leftTabMenuView = LeftTabMenuView().autoLayout("LeftTabMenuView")
+        return leftTabMenuView
     }()
 
     // 初始化逻辑
@@ -22,15 +21,12 @@ class LeftTabMenuViewController: BaseViewControllerWithAutolayout {
     }
 
     override func setupAndComposeView() {
-        self.view.backgroundColor = UIColor.black
-        self.view.isMultipleTouchEnabled = true
-
-        [label].forEach {
-            view.addSubview($0)
+        [leftTabMenuView].forEach {
+            self.view.addSubview($0)
         }
     }
 
     override func setupConstraints() {
-        label.autoCenterInSuperview()
+        //self.view.autoSetDimension(.width, toSize: 280)
     }
 }

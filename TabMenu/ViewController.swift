@@ -26,7 +26,7 @@ class ViewController: BaseViewControllerWithAutolayout {
         self.view.isMultipleTouchEnabled = true
         
         [label].forEach {
-            view.addSubview($0)
+            self.view.addSubview($0)
         }
     }
     

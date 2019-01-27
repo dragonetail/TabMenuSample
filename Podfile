@@ -20,7 +20,7 @@ target 'TabMenu' do
   pod 'SwiftyJSON', :path => '../LocalPods/SwiftyJSON/'
   pod 'GesturePassword', :path => '../LocalPods/GesturePassword/'
   pod 'DataCompression', :path => '../LocalPods/DataCompression/'
-  pod 'FAPanels', :path => '../LocalPods/FAPanels/'
+  #pod 'FAPanels', :path => '../LocalPods/FAPanels/'
   pod 'SwiftEventBus', :path => '../LocalPods/SwiftEventBus/'
   pod 'CyaneaOctopus', :path => '../LocalPods/CyaneaOctopus/'
 
