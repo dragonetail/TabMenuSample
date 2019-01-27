@@ -1,6 +1,16 @@
 import Foundation
 import UIKit
 
+extension UIColor {
+    static var mirage: UIColor {
+        return UIColor(red: 0.08, green: 0.11, blue: 0.19, alpha: 1.00)
+    }
+
+    static var lobolly: UIColor {
+        return UIColor(red: 0.75, green: 0.78, blue: 0.81, alpha: 1.00)
+    }
+}
+
 extension SideMenuController {
     public struct Configs {
 
@@ -34,11 +44,15 @@ extension SideMenuController {
             case sideBySide
         }
 
+        public enum Theme {
+            case light
+            case dark
+        }
+
         public struct Animation {
             public var openDuration: TimeInterval = 0.4
             public var hideDuration: TimeInterval = 0.4
             public var animationOptions: UIView.AnimationOptions = .curveEaseInOut
-            //TODO
             public var dampingRatio: CGFloat = 1
             public var initialSpringVelocity: CGFloat = 1
             public var shouldAddShadowWhenOpenning = true
@@ -46,10 +60,35 @@ extension SideMenuController {
         }
 
 
-        public var menuWidth: CGFloat = 280
+        public var tabMenuWidth: CGFloat = 280
         public var position: MenuPosition = .above
         public var direction: MenuDirection = .left
         public var statusBarBehavior: StatusBarBehavior = .none
+
+        public var tabMenuBackground: UIColor = UIColor(red: 0.03, green: 0.04, blue: 0.07, alpha: 1.00)
+        public var tabMenuTextColor: UIColor = UIColor.white //External usage
+        public var contentBackground: UIColor = UIColor(red: 0.08, green: 0.11, blue: 0.19, alpha: 1.00)
+        public var contentTextColor: UIColor = UIColor.lobolly //External usage
+        public var statusBarStyle: UIStatusBarStyle = .lightContent
+
+        public var theme: Theme = .dark {
+            didSet {
+                if theme == .dark {
+                    tabMenuBackground = UIColor(red: 0.03, green: 0.04, blue: 0.07, alpha: 1.00)
+                    tabMenuTextColor = .white
+                    contentBackground = UIColor(red: 0.08, green: 0.11, blue: 0.19, alpha: 1.00)
+                    contentTextColor = .lobolly
+                    statusBarStyle = .lightContent
+                } else {
+                    tabMenuBackground = UIColor(red: 0.98, green: 0.97, blue: 0.96, alpha: 1.00)
+                    tabMenuTextColor = .black
+                    contentBackground = .white
+                    contentTextColor = .black
+                    statusBarStyle = .default
+                }
+            }
+        }
+
 
         //是否需要遵循本地化语言的UI方向
         public var shouldRespectLanguageDirection = true
@@ -59,8 +98,9 @@ extension SideMenuController {
         public var hideMenuWhenEnteringBackground = false
 
         public var defaultCacheKey: String = "main"
-        public var supportedOrientations: UIInterfaceOrientationMask = .portrait
+        public var supportedOrientations: UIInterfaceOrientationMask = .all
 
+        public var enableTransitionAnimation = true
         public var animation = Animation()
     }
 }

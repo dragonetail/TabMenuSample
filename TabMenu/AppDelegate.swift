@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         if let window = self.window {
             window.backgroundColor = UIColor.white
-            
+
 //            let rootController = FAPanelController()
 ////            rootController.configs.panFromEdge  = true
 ////            rootController.configs.canLeftSwipe  = false
@@ -28,18 +28,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            rootController.center(ViewController())
 //                .left(LeftTabMenuViewController())
 //            window.makeKeyAndVisible()
-            
-            let sideMenuController = SideMenuController(contentViewController: ViewController(),
-                               menuViewController: LeftTabMenuViewController())
-            window.rootViewController = sideMenuController
-            
-            sideMenuController.configs.menuWidth = 500
-            sideMenuController.configs.statusBarBehavior = .hideOnMenu
+
+            let sideMenuController = SideMenuController()
+            sideMenuController.configs.tabMenuWidth = 280
+            sideMenuController.configs.statusBarBehavior = .none
             sideMenuController.configs.position = .above
             sideMenuController.configs.direction = .left
             sideMenuController.configs.enablePanGesture = true
             sideMenuController.configs.supportedOrientations = .portrait
             sideMenuController.configs.shouldRespectLanguageDirection = true
+            sideMenuController.configs.theme = .dark
+            
+            sideMenuController.contentViewController = ViewController()
+            sideMenuController.menuViewController = LeftTabMenuViewController()
+
+            window.rootViewController = sideMenuController
             window.makeKeyAndVisible()
         }
 

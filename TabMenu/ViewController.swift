@@ -13,24 +13,30 @@ class ViewController: BaseViewControllerWithAutolayout {
     lazy var label: UILabel = {
         let label = UILabel()
         label.text = "Hi~"
+
+        label.textColor = UIColor.lobolly
+
         return label
     }()
-    
+
     // 初始化逻辑
     override open var accessibilityIdentifier: String {
-        return "LeftTabMenuViewController"
+        return "ViewController"
     }
-    
+
     override func setupAndComposeView() {
-        self.view.backgroundColor = UIColor.white
-        self.view.isMultipleTouchEnabled = true
-        
+        self.view.autoLayout(accessibilityIdentifier)
+
         [label].forEach {
             self.view.addSubview($0)
         }
     }
-    
+
     override func setupConstraints() {
         label.autoCenterInSuperview()
+//        label.autoPinEdge(toSuperviewEdge: .top)
+//        label.autoPinEdge(toSuperviewEdge: .left)
+//        label.autoAlignAxis(.vertical, toSameAxisOf: self.view)
+//        label.autoAlignAxis(.horizontal, toSameAxisOf: self.view)
     }
 }

@@ -1,6 +1,8 @@
 import UIKit
+import SwiftBaseBootstrap
+import PureLayout
 
-open class SideMenuController: UIViewController {
+open class SideMenuController: BaseViewControllerWithAutolayout {
     /// 配置
     open var configs: Configs = Configs()
 
@@ -19,7 +21,6 @@ open class SideMenuController: UIViewController {
     open var contentViewController: UIViewController! {
         didSet {
             guard contentViewController !== oldValue &&
-                isViewLoaded &&
                 !children.contains(contentViewController) else {
                     return
             }
@@ -29,6 +30,7 @@ open class SideMenuController: UIViewController {
             }
 
             load(contentViewController, on: contentContainerView)
+            contentViewController.view.autoPinEdgesToSuperviewEdges()
             contentContainerView.sendSubviewToBack(contentViewController.view)
             unload(oldValue)
 
@@ -43,18 +45,50 @@ open class SideMenuController: UIViewController {
     /// 侧栏菜单控制器
     open var menuViewController: UIViewController! {
         didSet {
-            guard menuViewController !== oldValue && isViewLoaded else {
+            guard menuViewController !== oldValue else {
                 return
             }
 
             load(menuViewController, on: menuContainerView)
+            menuViewController.view.autoSetDimension(.width, toSize: configs.tabMenuWidth)
+            if adjustedDirection == .left {
+                menuViewController.view.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .left)
+            } else {
+                menuViewController.view.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .right)
+            }
             unload(oldValue)
         }
     }
 
-    private let menuContainerView = UIView()
-    private let contentContainerView = UIView()
-    private var statusBarScreenShotView: UIView?
+    private lazy var menuContainerView: UIView = {
+        let menuContainerView = UIView().autoLayout("menuContainerView")
+        menuContainerView.backgroundColor = configs.tabMenuBackground
+        return menuContainerView
+    }()
+
+
+    private lazy var contentContainerView: UIView = {
+        let contentContainerView = UIView().autoLayout("contentContainerView")
+        contentContainerView.backgroundColor = configs.contentBackground
+        return contentContainerView
+    }()
+
+    private lazy var contentContainerOverlay: UIView = {
+        let contentContainerOverlay = UIView().autoLayout("contentContainerOverlay")
+        if !configs.animation.shouldAddShadowWhenOpenning {
+            contentContainerOverlay.backgroundColor = .clear
+        } else {
+            contentContainerOverlay.backgroundColor = .black
+            contentContainerOverlay.alpha = 0
+        }
+        contentContainerOverlay.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+
+        let tapToHideGesture = UITapGestureRecognizer()
+        tapToHideGesture.addTarget(self, action: #selector(SideMenuController.handleTapGestureOnContentContainerOverlay(_:)))
+        contentContainerOverlay.addGestureRecognizer(tapToHideGesture)
+
+        return contentContainerOverlay
+    }()
 
     /// 侧栏菜单是否打开看状态
     open var isMenuOpenning = false
@@ -67,43 +101,34 @@ open class SideMenuController: UIViewController {
         panGestureRecognizer.delegate = self
         return panGestureRecognizer
     }()
+    private lazy var edgePanGestureRecognizer: UIScreenEdgePanGestureRecognizer = {
+        let edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(SideMenuController.handleEdgePanGesture(_:)))
+        edgePanGestureRecognizer.delegate = self
+        edgePanGestureRecognizer.edges = .left
 
-    /// 构造方法
-    public convenience init(contentViewController: UIViewController, menuViewController: UIViewController) {
-        self.init(nibName: nil, bundle: nil)
-
-        // 不会触发didSet方法
-        self.contentViewController = contentViewController
-        self.menuViewController = menuViewController
-    }
+        return edgePanGestureRecognizer
+    }()
 
     deinit {
-        unregisterNotifications()
+        NotificationCenter.default.removeObserver(self)
     }
 
-    open override func viewDidLoad() {
-        super.viewDidLoad()
+    // 初始化逻辑
+    override open var accessibilityIdentifier: String {
+        return "SideMenuController"
+    }
 
-        guard let menuViewController = menuViewController,
-            let contentViewController = contentViewController else {
+    override open func setupAndComposeView() {
+        guard let _ = menuViewController,
+            let _ = contentViewController else {
                 fatalError("[SideMenuSwift] `menuViewController`和`contentViewController`不能为空。")
         }
 
-        contentContainerView.frame = view.bounds
-        view.addSubview(contentContainerView)
-
-        // 根据语言UI方向，判断UIView的方向
-        resolveDirection(with: contentContainerView)
-
-        menuContainerView.frame = sideMenuFrame(visibility: false)
-        view.addSubview(menuContainerView)
-
-        load(contentViewController, on: contentContainerView)
-        load(menuViewController, on: menuContainerView)
-
-        if configs.position == .under {
-            view.bringSubviewToFront(contentContainerView)
+        [contentContainerView, menuContainerView].forEach {
+            self.view.addSubview($0)
         }
+
+        contentContainerView.addSubview(contentContainerOverlay)
 
         // 触发状态栏更新
         setNeedsStatusBarAppearanceUpdate()
@@ -111,11 +136,29 @@ open class SideMenuController: UIViewController {
         lazyCachedViewControllers[configs.defaultCacheKey] = contentViewController
 
         self.view.addGestureRecognizer(panGestureRecognizer)
-        setUpNotifications()
+        self.view.addGestureRecognizer(edgePanGestureRecognizer)
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(SideMenuController.appDidEnteredBackground),
+                         name: UIApplication.didEnterBackgroundNotification, object: nil)
+    }
+
+    override open func setupConstraints() {
+        contentContainerView.autoPinEdgesToSuperviewEdges()
+
+        menuContainerView.autoPinEdge(.top, to: .top, of: contentContainerView)
+        menuContainerView.autoPinEdge(.bottom, to: .bottom, of: contentContainerView)
+        menuContainerView.autoMatch(.width, to: .width, of: contentContainerView)
+        if adjustedDirection == .left {
+            menuContainerView.autoPinEdge(.trailing, to: .leading, of: contentContainerView)
+        } else {
+            menuContainerView.autoPinEdge(.leading, to: .trailing, of: contentContainerView)
+        }
+
+        contentContainerOverlay.autoPinEdgesToSuperviewEdges()
+        contentContainerOverlay.isHidden = true
     }
 
     /// 根据语言UI方向，判断UIView的方向
-    private lazy var adjustedDirection = Configs.MenuDirection.left
     private var shouldReverseDirection: Bool {
         guard configs.shouldRespectLanguageDirection else {
             return false
@@ -124,13 +167,13 @@ open class SideMenuController: UIViewController {
         let layoutDirection = UIView.userInterfaceLayoutDirection(for: attribute)
         return layoutDirection == .rightToLeft
     }
-    private func resolveDirection(with view: UIView) {
+    private lazy var adjustedDirection: Configs.MenuDirection = {
         if shouldReverseDirection {
-            adjustedDirection = (configs.direction == .left ? .right : .left)
+            return (configs.direction == .left ? .right : .left)
         } else {
-            adjustedDirection = configs.direction
+            return configs.direction
         }
-    }
+    }()
 
     open func openMenu(animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
         changeMenuVisibility(visibility: true, animated: animated, completion: completion)
@@ -156,6 +199,7 @@ open class SideMenuController: UIViewController {
             self.contentContainerView.frame = self.contentFrame(visibility: visibility)
             if self.configs.animation.shouldAddShadowWhenOpenning {
                 self.contentContainerOverlay.alpha = visibility ? self.configs.animation.shadowAlpha : 0
+                self.contentContainerOverlay.isHidden = !visibility
             }
         }
 
@@ -167,9 +211,11 @@ open class SideMenuController: UIViewController {
             }
 
             if !visibility {
-                self.contentContainerOverlay.removeFromSuperview()
+                self.contentContainerOverlay.isHidden = true
+                //self.contentContainerOverlay.removeFromSuperview()
             } else {
-                self.contentContainerView.insertSubview(self.contentContainerOverlay, aboveSubview: self.contentViewController.view)
+                self.contentContainerOverlay.isHidden = false
+                //self.contentContainerView.insertSubview(self.contentContainerOverlay, aboveSubview: self.contentViewController.view)
             }
 
             completion?(true)
@@ -221,33 +267,18 @@ open class SideMenuController: UIViewController {
                        })
     }
 
-
-    private lazy var contentContainerOverlay: UIView = {
-        let contentContainerOverlay = UIView()
-        contentContainerOverlay.bounds = contentContainerView.bounds
-        contentContainerOverlay.center = contentContainerView.center
-        if !configs.animation.shouldAddShadowWhenOpenning {
-            contentContainerOverlay.backgroundColor = .clear
-        } else {
-            contentContainerOverlay.backgroundColor = .black
-            contentContainerOverlay.alpha = 0
-        }
-        contentContainerOverlay.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-
-        let tapToHideGesture = UITapGestureRecognizer()
-        tapToHideGesture.addTarget(self, action: #selector(SideMenuController.handleTapGestureOnContentContainerOverlay(_:)))
-        contentContainerOverlay.addGestureRecognizer(tapToHideGesture)
-
-        contentContainerOverlay.accessibilityIdentifier = "ContentShadowOverlay"
-        return contentContainerOverlay
-    }()
-
     @objc private func handleTapGestureOnContentContainerOverlay(_ tap: UITapGestureRecognizer) {
         hideMenu()
     }
 
+    @objc func handleEdgePanGesture(_ recognizer: UIScreenEdgePanGestureRecognizer) {
+        if recognizer.state == .recognized {
+            openMenu(animated: true)
+        }
+    }
+
     @objc private func handlePanGesture(_ pan: UIPanGestureRecognizer) {
-        let menuWidth = configs.menuWidth
+        let menuWidth = configs.tabMenuWidth
         let isLeft = adjustedDirection == .left
         var translation = pan.translation(in: pan.view).x
         let viewToAnimate: UIView
@@ -320,7 +351,8 @@ open class SideMenuController: UIViewController {
 
             if configs.animation.shouldAddShadowWhenOpenning {
                 let shadowPercent = min(menuContainerView.frame.maxX / menuWidth, 1)
-                contentContainerOverlay.alpha = self.configs.animation.shadowAlpha * shadowPercent
+                self.contentContainerOverlay.alpha = self.configs.animation.shadowAlpha * shadowPercent
+                self.contentContainerOverlay.isHidden = false
             }
         case .ended, .cancelled, .failed:
             let offset: CGFloat
@@ -343,29 +375,16 @@ open class SideMenuController: UIViewController {
         }
     }
 
-    // MARK: Notification
-
-    private func setUpNotifications() {
-        NotificationCenter.default
-            .addObserver(self,
-                         selector: #selector(SideMenuController.appDidEnteredBackground),
-                         name: UIApplication.didEnterBackgroundNotification,
-                         object: nil)
-    }
-
-    private func unregisterNotifications() {
-        // swiftlint:disable:next notification_center_detachment
-        NotificationCenter.default.removeObserver(self)
-    }
-
     @objc private func appDidEnteredBackground() {
         if configs.hideMenuWhenEnteringBackground {
             hideMenu(animated: false)
         }
     }
 
-    // MARK: Status Bar
-
+    private var statusBarScreenShotView: UIView?
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return configs.statusBarStyle
+    }
     private func setStatusBar(hidden: Bool, animate: Bool = false) {
         // UIKit provides `setNeedsStatusBarAppearanceUpdate` and couple of methods to animate the status bar changes.
         // The problem with this approach is it will hide the status bar and it's underlying space completely, as a result,
@@ -373,7 +392,7 @@ open class SideMenuController: UIViewController {
         // So we need to manipulate the windows of status bar manually.
 
         let behavior = self.configs.statusBarBehavior
-        guard let sbw = UIWindow.sb, sbw.isStatusBarHidden(with: behavior) != hidden else {
+        guard let sbw = UIWindow.sb, behavior != .none, sbw.isStatusBarHidden(with: behavior) != hidden else {
             return
         }
 
@@ -405,40 +424,17 @@ open class SideMenuController: UIViewController {
         return screenshot
     }
 
-    open override var childForStatusBarStyle: UIViewController? {
-        // Forward to the content view controller
-        return contentViewController
-    }
 
-    open override var childForStatusBarHidden: UIViewController? {
-        return contentViewController
-    }
-
-    // MARK: Caching
-
-    /// Caches the closure that generate the view controller with identifier.
-    ///
-    /// It's useful when you want to configure the caching relation without instantiating the view controller immediately.
-    ///
-    /// - Parameters:
-    ///   - viewControllerGenerator: The closure that generate the view controller. It will only executed when needed.
-    ///   - identifier: Identifier used to change content view controller
+    /// 缓存UIViewController
     open func cache(viewControllerGenerator: @escaping () -> UIViewController?, with identifier: String) {
         lazyCachedViewControllerGenerators[identifier] = viewControllerGenerator
     }
-
-    /// Caches the view controller with identifier.
-    ///
-    /// - Parameters:
-    ///   - viewController: the view controller to cache
-    ///   - identifier: the identifier
+    /// 缓存UIViewController
     open func cache(viewController: UIViewController, with identifier: String) {
         lazyCachedViewControllers[identifier] = viewController
     }
 
-    /// Changes the content view controller to the cached one with given `identifier`.
-    ///
-    /// - Parameter identifier: the identifier that associates with a cache view controller or generator.
+    /// 通过缓存UIViewController，切换内容
     open func setContentViewController(with identifier: String,
                                        animated: Bool = false,
                                        completion: (() -> Void)? = nil) {
@@ -449,10 +445,11 @@ open class SideMenuController: UIViewController {
             lazyCachedViewControllers[identifier] = viewController
             setContentViewController(to: viewController, animated: animated, completion: completion)
         } else {
-            fatalError("[SideMenu] View controller associated with \(identifier) not found!")
+            fatalError("[SideMenu] \(identifier)关联的UIViewController没有找到。")
         }
     }
 
+    /// 直接切换UIViewController
     open func setContentViewController(to viewController: UIViewController,
                                        animated: Bool = false,
                                        completion: (() -> Void)? = nil) {
@@ -473,13 +470,6 @@ open class SideMenuController: UIViewController {
             let animatorFromDelegate = delegate?.sideMenuController?(self,
                                                                      animationControllerFrom: contentViewController,
                                                                      to: viewController)
-
-            #if DEBUG
-                if animatorFromDelegate == nil {
-                    // swiftlint:disable:next line_length
-                    print("[SideMenu] `setContentViewController` is called with animated while the delegate method return nil, fall back to the fade animation.")
-                }
-            #endif
 
             let animator = animatorFromDelegate ?? BasicTransitionAnimator()
 
@@ -504,16 +494,13 @@ open class SideMenuController: UIViewController {
                 completion?()
             }
             animator.animateTransition(using: transitionContext)
-
         } else {
             contentViewController = viewController
             completion?()
         }
     }
 
-    /// Return the identifier of current content view controller.
-    ///
-    /// - Returns: if not exist, returns nil.
+    /// 返回当前ViewController对应的缓存ID
     open func currentCacheIdentifier() -> String? {
         guard let index = lazyCachedViewControllers.values.index(of: contentViewController) else {
             return nil
@@ -521,15 +508,11 @@ open class SideMenuController: UIViewController {
         return lazyCachedViewControllers.keys[index]
     }
 
-    /// Clears cached view controller or generators with identifier.
-    ///
-    /// - Parameter identifier: the identifier that associates with a cache view controller or generator.
+    /// 清除缓存
     open func clearCache(with identifier: String) {
         lazyCachedViewControllerGenerators[identifier] = nil
         lazyCachedViewControllers[identifier] = nil
     }
-
-    // MARK: - Helper Methods
 
     private func sideMenuFrame(visibility: Bool) -> CGRect {
         let position = configs.position
@@ -537,8 +520,7 @@ open class SideMenuController: UIViewController {
         case .above, .sideBySide:
             var baseFrame = view.frame
             if visibility {
-                //拼接起来
-                baseFrame.origin.x = configs.menuWidth - baseFrame.width
+                baseFrame.origin.x = configs.tabMenuWidth - baseFrame.width
             } else {
                 baseFrame.origin.x = -baseFrame.width
             }
@@ -559,15 +541,13 @@ open class SideMenuController: UIViewController {
             var baseFrame = view.frame
             if visibility {
                 let factor: CGFloat = adjustedDirection == .left ? 1 : -1
-                baseFrame.origin.x = configs.menuWidth * factor
+                baseFrame.origin.x = configs.tabMenuWidth * factor
             } else {
                 baseFrame.origin.x = 0
             }
             return baseFrame
         }
     }
-
-    // MARK: Orientation
 
     open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return configs.supportedOrientations
@@ -588,8 +568,6 @@ open class SideMenuController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
     }
 }
-
-// MARK: UIGestureRecognizerDelegate
 
 extension SideMenuController: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
