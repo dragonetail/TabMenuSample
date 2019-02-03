@@ -17,9 +17,12 @@
 		D99149F821FD4BE000B9C223 /* UIView+Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99149F421FD4BDF00B9C223 /* UIView+Container.swift */; };
 		D99149F921FD4BE000B9C223 /* UIViewController+Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99149F521FD4BDF00B9C223 /* UIViewController+Container.swift */; };
 		D99149FA21FD4BE000B9C223 /* StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99149F621FD4BDF00B9C223 /* StatusBar.swift */; };
+		D99149FE21FF518400B9C223 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99149FD21FF518400B9C223 /* ThemeManager.swift */; };
+		D9914A0222004EC900B9C223 /* WorkWithOtherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9914A0122004EC900B9C223 /* WorkWithOtherViewController.swift */; };
+		D9914A042200516400B9C223 /* OtherExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9914A032200516400B9C223 /* OtherExampleViewController.swift */; };
+		D9914A06220056AE00B9C223 /* SideMenuNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9914A05220056AE00B9C223 /* SideMenuNavigationController.swift */; };
 		D9B7815F21CB6DE100BC156E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B7815E21CB6DE100BC156E /* AppDelegate.swift */; };
-		D9B7816121CB6DE100BC156E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B7816021CB6DE100BC156E /* ViewController.swift */; };
-		D9B7816421CB6DE100BC156E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9B7816221CB6DE100BC156E /* Main.storyboard */; };
+		D9B7816121CB6DE100BC156E /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B7816021CB6DE100BC156E /* PreferencesViewController.swift */; };
 		D9B7816621CB6DE200BC156E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9B7816521CB6DE200BC156E /* Assets.xcassets */; };
 		D9B7816921CB6DE200BC156E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9B7816721CB6DE200BC156E /* LaunchScreen.storyboard */; };
 		D9B7817121CB700100BC156E /* LeftTabMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B7817021CB700000BC156E /* LeftTabMenuViewController.swift */; };
@@ -37,10 +40,13 @@
 		D99149F421FD4BDF00B9C223 /* UIView+Container.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Container.swift"; sourceTree = "<group>"; };
 		D99149F521FD4BDF00B9C223 /* UIViewController+Container.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Container.swift"; sourceTree = "<group>"; };
 		D99149F621FD4BDF00B9C223 /* StatusBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
+		D99149FD21FF518400B9C223 /* ThemeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		D9914A0122004EC900B9C223 /* WorkWithOtherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkWithOtherViewController.swift; sourceTree = "<group>"; };
+		D9914A032200516400B9C223 /* OtherExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherExampleViewController.swift; sourceTree = "<group>"; };
+		D9914A05220056AE00B9C223 /* SideMenuNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuNavigationController.swift; sourceTree = "<group>"; };
 		D9B7815B21CB6DE100BC156E /* TabMenu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TabMenu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9B7815E21CB6DE100BC156E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D9B7816021CB6DE100BC156E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		D9B7816321CB6DE100BC156E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D9B7816021CB6DE100BC156E /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		D9B7816521CB6DE200BC156E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D9B7816821CB6DE200BC156E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D9B7816A21CB6DE200BC156E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -80,12 +86,14 @@
 		D99149CD21FD4BA500B9C223 /* SideMenu */ = {
 			isa = PBXGroup;
 			children = (
+				D99149FD21FF518400B9C223 /* ThemeManager.swift */,
 				D99149F221FD4BD700B9C223 /* Extensions */,
 				D99149D221FD4BBC00B9C223 /* SideMenuController.swift */,
 				D99149CE21FD4BBB00B9C223 /* SideMenuControllerConfigs.swift */,
 				D99149D121FD4BBB00B9C223 /* SideMenuControllerDelegate.swift */,
 				D99149CF21FD4BBB00B9C223 /* TransitionContext.swift */,
 				D99149D021FD4BBB00B9C223 /* BasicTransitionAnimator.swift */,
+				D9914A05220056AE00B9C223 /* SideMenuNavigationController.swift */,
 			);
 			path = SideMenu;
 			sourceTree = "<group>";
@@ -125,8 +133,9 @@
 				D99149CD21FD4BA500B9C223 /* SideMenu */,
 				D9B7815E21CB6DE100BC156E /* AppDelegate.swift */,
 				D9B7817021CB700000BC156E /* LeftTabMenuViewController.swift */,
-				D9B7816021CB6DE100BC156E /* ViewController.swift */,
-				D9B7816221CB6DE100BC156E /* Main.storyboard */,
+				D9B7816021CB6DE100BC156E /* PreferencesViewController.swift */,
+				D9914A0122004EC900B9C223 /* WorkWithOtherViewController.swift */,
+				D9914A032200516400B9C223 /* OtherExampleViewController.swift */,
 				D9B7816521CB6DE200BC156E /* Assets.xcassets */,
 				D9B7816721CB6DE200BC156E /* LaunchScreen.storyboard */,
 				D9B7816A21CB6DE200BC156E /* Info.plist */,
@@ -196,7 +205,6 @@
 			files = (
 				D9B7816921CB6DE200BC156E /* LaunchScreen.storyboard in Resources */,
 				D9B7816621CB6DE200BC156E /* Assets.xcassets in Resources */,
-				D9B7816421CB6DE100BC156E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,40 +220,18 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-TabMenu/Pods-TabMenu-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CyaneaOctopus/CyaneaOctopus.framework",
-				"${BUILT_PRODUCTS_DIR}/DataCompression/DataCompression.framework",
-				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
-				"${BUILT_PRODUCTS_DIR}/FAPanels/FAPanels.framework",
-				"${BUILT_PRODUCTS_DIR}/FLEX/FLEX.framework",
-				"${BUILT_PRODUCTS_DIR}/GRDB.swift/GRDB.framework",
-				"${BUILT_PRODUCTS_DIR}/GesturePassword/GesturePassword.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
 				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftBaseBootstrap/SwiftBaseBootstrap.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftEventBus/SwiftEventBus.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftPagingTabView/SwiftPagingTabView.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/SwipeSelectingCollectionView2/SwipeSelectingCollectionView2.framework",
 				"${BUILT_PRODUCTS_DIR}/XCGLogger/XCGLogger.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CyaneaOctopus.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DataCompression.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FAPanels.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLEX.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRDB.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GesturePassword.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftBaseBootstrap.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftEventBus.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftPagingTabView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeSelectingCollectionView2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XCGLogger.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,17 +268,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9B7816121CB6DE100BC156E /* ViewController.swift in Sources */,
+				D9B7816121CB6DE100BC156E /* PreferencesViewController.swift in Sources */,
 				D99149D821FD4BBC00B9C223 /* SideMenuController.swift in Sources */,
 				D99149F821FD4BE000B9C223 /* UIView+Container.swift in Sources */,
 				D9B7815F21CB6DE100BC156E /* AppDelegate.swift in Sources */,
 				D99149F921FD4BE000B9C223 /* UIViewController+Container.swift in Sources */,
 				D99149D621FD4BBC00B9C223 /* BasicTransitionAnimator.swift in Sources */,
+				D99149FE21FF518400B9C223 /* ThemeManager.swift in Sources */,
 				D99149D721FD4BBC00B9C223 /* SideMenuControllerDelegate.swift in Sources */,
 				D99149D421FD4BBC00B9C223 /* SideMenuControllerConfigs.swift in Sources */,
 				D99149F721FD4BE000B9C223 /* UIViewController+SideMenu.swift in Sources */,
+				D9914A042200516400B9C223 /* OtherExampleViewController.swift in Sources */,
+				D9914A06220056AE00B9C223 /* SideMenuNavigationController.swift in Sources */,
 				D9B7817121CB700100BC156E /* LeftTabMenuViewController.swift in Sources */,
 				D99149FA21FD4BE000B9C223 /* StatusBar.swift in Sources */,
+				D9914A0222004EC900B9C223 /* WorkWithOtherViewController.swift in Sources */,
 				D99149D521FD4BBC00B9C223 /* TransitionContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -300,14 +290,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		D9B7816221CB6DE100BC156E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D9B7816321CB6DE100BC156E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		D9B7816721CB6DE200BC156E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

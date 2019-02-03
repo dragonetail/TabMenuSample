@@ -1,6 +1,6 @@
 import UIKit
 
-extension SideMenuController {
+extension TabMenuController {
     class TransitionContext: NSObject, UIViewControllerContextTransitioning {
         var isAnimated = true
         var targetTransform: CGAffineTransform = .identity

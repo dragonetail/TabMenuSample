@@ -2,16 +2,15 @@ import UIKit
 import SwiftBaseBootstrap
 import PureLayout
 
-open class SideMenuController: BaseViewControllerWithAutolayout {
+open class TabMenuController: BaseViewControllerWithAutolayout {
     /// 配置
     open var configs: Configs = Configs()
 
     /// 缓存
-    private lazy var lazyCachedViewControllerGenerators: [String: () -> UIViewController?] = [:]
     private lazy var lazyCachedViewControllers: [String: UIViewController] = [:]
 
     /// 通知代理
-    public weak var delegate: SideMenuControllerDelegate?
+    public weak var delegate: TabMenuControllerDelegate?
 
     /// 区分内部和外部更新contentViewController的动作
     private var shouldCallSwitchingDelegate = true
@@ -33,6 +32,8 @@ open class SideMenuController: BaseViewControllerWithAutolayout {
             contentViewController.view.autoPinEdgesToSuperviewEdges()
             contentContainerView.sendSubviewToBack(contentViewController.view)
             unload(oldValue)
+
+            lazyCachedViewControllers[configs.defaultCacheKey] = contentViewController
 
             if shouldCallSwitchingDelegate {
                 delegate?.sideMenuController?(self, didShow: contentViewController, animated: false)
@@ -62,14 +63,14 @@ open class SideMenuController: BaseViewControllerWithAutolayout {
 
     private lazy var menuContainerView: UIView = {
         let menuContainerView = UIView().autoLayout("menuContainerView")
-        menuContainerView.backgroundColor = configs.tabMenuBackground
+        menuContainerView.backgroundColor = themeManager.theme.secondaryBackgroundColor
         return menuContainerView
     }()
 
 
     private lazy var contentContainerView: UIView = {
         let contentContainerView = UIView().autoLayout("contentContainerView")
-        contentContainerView.backgroundColor = configs.contentBackground
+        contentContainerView.backgroundColor = themeManager.theme.mainBackgroundColor
         return contentContainerView
     }()
 
@@ -84,7 +85,7 @@ open class SideMenuController: BaseViewControllerWithAutolayout {
         contentContainerOverlay.autoresizingMask = [.flexibleHeight, .flexibleWidth]
 
         let tapToHideGesture = UITapGestureRecognizer()
-        tapToHideGesture.addTarget(self, action: #selector(SideMenuController.handleTapGestureOnContentContainerOverlay(_:)))
+        tapToHideGesture.addTarget(self, action: #selector(TabMenuController.handleTapGestureOnContentContainerOverlay(_:)))
         contentContainerOverlay.addGestureRecognizer(tapToHideGesture)
 
         return contentContainerOverlay
@@ -97,12 +98,12 @@ open class SideMenuController: BaseViewControllerWithAutolayout {
     private var isDraggingBegan = false
     private var draggingStartX: CGFloat = 0
     private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(SideMenuController.handlePanGesture(_:)))
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(TabMenuController.handlePanGesture(_:)))
         panGestureRecognizer.delegate = self
         return panGestureRecognizer
     }()
     private lazy var edgePanGestureRecognizer: UIScreenEdgePanGestureRecognizer = {
-        let edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(SideMenuController.handleEdgePanGesture(_:)))
+        let edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(TabMenuController.handleEdgePanGesture(_:)))
         edgePanGestureRecognizer.delegate = self
         edgePanGestureRecognizer.edges = .left
 
@@ -115,13 +116,13 @@ open class SideMenuController: BaseViewControllerWithAutolayout {
 
     // 初始化逻辑
     override open var accessibilityIdentifier: String {
-        return "SideMenuController"
+        return "TabMenuController"
     }
 
     override open func setupAndComposeView() {
         guard let _ = menuViewController,
             let _ = contentViewController else {
-                fatalError("[SideMenuSwift] `menuViewController`和`contentViewController`不能为空。")
+                fatalError("[TabMenuSwift] `menuViewController`和`contentViewController`不能为空。")
         }
 
         [contentContainerView, menuContainerView].forEach {
@@ -133,12 +134,10 @@ open class SideMenuController: BaseViewControllerWithAutolayout {
         // 触发状态栏更新
         setNeedsStatusBarAppearanceUpdate()
 
-        lazyCachedViewControllers[configs.defaultCacheKey] = contentViewController
-
         self.view.addGestureRecognizer(panGestureRecognizer)
         self.view.addGestureRecognizer(edgePanGestureRecognizer)
         NotificationCenter.default
-            .addObserver(self, selector: #selector(SideMenuController.appDidEnteredBackground),
+            .addObserver(self, selector: #selector(TabMenuController.appDidEnteredBackground),
                          name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
 
@@ -383,7 +382,7 @@ open class SideMenuController: BaseViewControllerWithAutolayout {
 
     private var statusBarScreenShotView: UIView?
     open override var preferredStatusBarStyle: UIStatusBarStyle {
-        return configs.statusBarStyle
+        return themeManager.theme.statusBarStyle
     }
     private func setStatusBar(hidden: Bool, animate: Bool = false) {
         // UIKit provides `setNeedsStatusBarAppearanceUpdate` and couple of methods to animate the status bar changes.
@@ -426,9 +425,6 @@ open class SideMenuController: BaseViewControllerWithAutolayout {
 
 
     /// 缓存UIViewController
-    open func cache(viewControllerGenerator: @escaping () -> UIViewController?, with identifier: String) {
-        lazyCachedViewControllerGenerators[identifier] = viewControllerGenerator
-    }
     /// 缓存UIViewController
     open func cache(viewController: UIViewController, with identifier: String) {
         lazyCachedViewControllers[identifier] = viewController
@@ -440,12 +436,10 @@ open class SideMenuController: BaseViewControllerWithAutolayout {
                                        completion: (() -> Void)? = nil) {
         if let viewController = lazyCachedViewControllers[identifier] {
             setContentViewController(to: viewController, animated: animated, completion: completion)
-        } else if let viewController = lazyCachedViewControllerGenerators[identifier]?() {
-            lazyCachedViewControllerGenerators[identifier] = nil
-            lazyCachedViewControllers[identifier] = viewController
+        } else if let viewController = lazyCachedViewControllers[configs.defaultCacheKey] {
             setContentViewController(to: viewController, animated: animated, completion: completion)
         } else {
-            fatalError("[SideMenu] \(identifier)关联的UIViewController没有找到。")
+            fatalError("[TabMenu] \(identifier)关联的UIViewController没有找到。")
         }
     }
 
@@ -473,7 +467,7 @@ open class SideMenuController: BaseViewControllerWithAutolayout {
 
             let animator = animatorFromDelegate ?? BasicTransitionAnimator()
 
-            let transitionContext = SideMenuController.TransitionContext(with: contentViewController,
+            let transitionContext = TabMenuController.TransitionContext(with: contentViewController,
                                                                          toViewController: viewController)
             transitionContext.isAnimated = true
             transitionContext.isInteractive = false
@@ -510,7 +504,6 @@ open class SideMenuController: BaseViewControllerWithAutolayout {
 
     /// 清除缓存
     open func clearCache(with identifier: String) {
-        lazyCachedViewControllerGenerators[identifier] = nil
         lazyCachedViewControllers[identifier] = nil
     }
 
@@ -569,7 +562,7 @@ open class SideMenuController: BaseViewControllerWithAutolayout {
     }
 }
 
-extension SideMenuController: UIGestureRecognizerDelegate {
+extension TabMenuController: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         guard configs.enablePanGesture else {
             return false

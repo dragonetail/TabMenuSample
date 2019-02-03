@@ -143,36 +143,15 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/CyaneaOctopus/CyaneaOctopus.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/DataCompression/DataCompression.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/FAPanels/FAPanels.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/FLEX/FLEX.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/GRDB.swift/GRDB.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/GesturePassword/GesturePassword.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftBaseBootstrap/SwiftBaseBootstrap.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SwiftEventBus/SwiftEventBus.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SwiftPagingTabView/SwiftPagingTabView.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SwipeSelectingCollectionView2/SwipeSelectingCollectionView2.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/XCGLogger/XCGLogger.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/CyaneaOctopus/CyaneaOctopus.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/DataCompression/DataCompression.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/FAPanels/FAPanels.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/GRDB.swift/GRDB.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/GesturePassword/GesturePassword.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftBaseBootstrap/SwiftBaseBootstrap.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SwiftEventBus/SwiftEventBus.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SwiftPagingTabView/SwiftPagingTabView.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SwipeSelectingCollectionView2/SwipeSelectingCollectionView2.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/XCGLogger/XCGLogger.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

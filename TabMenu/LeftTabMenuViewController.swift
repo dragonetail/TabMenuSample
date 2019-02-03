@@ -12,9 +12,9 @@ import PureLayout
 class LeftTabMenuViewController: BaseViewControllerWithAutolayout {
 
     lazy var selectionTableViewHeader: UILabel = {
-        let selectionTableViewHeader = UILabel()
+        let selectionTableViewHeader = UILabel().autoLayout("selectionTableViewHeader")
         selectionTableViewHeader.text = "菜单"
-        selectionTableViewHeader.textColor = .white
+        selectionTableViewHeader.textColor = themeManager.theme.secondaryTitleTextColor
         return selectionTableViewHeader
     }()
 
@@ -24,7 +24,7 @@ class LeftTabMenuViewController: BaseViewControllerWithAutolayout {
         menuTableView.dataSource = self
         menuTableView.delegate = self
         menuTableView.separatorStyle = .none
-        menuTableView.backgroundColor = self.sideMenuController?.configs.tabMenuBackground
+        menuTableView.backgroundColor = themeManager.theme.secondaryBackgroundColor
         return menuTableView
     }()
 
@@ -34,11 +34,12 @@ class LeftTabMenuViewController: BaseViewControllerWithAutolayout {
     }
 
     override func setupAndComposeView() {
-        self.view.autoLayout(accessibilityIdentifier)
-
         [selectionTableViewHeader, menuTableView].forEach {
             self.view.addSubview($0)
         }
+        
+        sideMenuController?.cache(viewController: TabMenuNavigationController.wrapper(WorkWithOtherViewController()), with: "1")
+        sideMenuController?.cache(viewController: TabMenuNavigationController.wrapper(OtherExampleViewController()), with: "2")
     }
 
     override func setupConstraints() {
@@ -67,8 +68,8 @@ extension LeftTabMenuViewController: UITableViewDelegate, UITableViewDataSource 
             cell.titleLabel.text = "代码"
         }
         
-        cell.contentView.backgroundColor = self.sideMenuController?.configs.tabMenuBackground
-        cell.titleLabel.textColor = self.sideMenuController?.configs.tabMenuTextColor
+        cell.contentView.backgroundColor = themeManager.theme.secondaryBackgroundColor
+        cell.titleLabel.textColor = themeManager.theme.secondarySubtitleTextColor
         return cell
     }
 
@@ -77,7 +78,7 @@ extension LeftTabMenuViewController: UITableViewDelegate, UITableViewDataSource 
 
         sideMenuController?.setContentViewController(with: "\(row)", animated: self.sideMenuController?.configs.enableTransitionAnimation ?? true)
         sideMenuController?.hideMenu()
-
+        
         print("[Example] View Controller Cache Identifier: " + sideMenuController!.currentCacheIdentifier()!)
     }
 

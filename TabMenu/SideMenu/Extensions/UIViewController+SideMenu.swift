@@ -2,15 +2,15 @@ import UIKit
 
 public extension UIViewController {
 
-    public var sideMenuController: SideMenuController? {
-        return findSideMenuController(from: self)
+    public var sideMenuController: TabMenuController? {
+        return findTabMenuController(from: self)
     }
 
-    fileprivate func findSideMenuController(from viewController: UIViewController) -> SideMenuController? {
+    fileprivate func findTabMenuController(from viewController: UIViewController) -> TabMenuController? {
         var sourceViewController: UIViewController? = viewController
         repeat {
             sourceViewController = sourceViewController?.parent
-            if let sideMenuController = sourceViewController as? SideMenuController {
+            if let sideMenuController = sourceViewController as? TabMenuController {
                 return sideMenuController
             }
         } while (sourceViewController != nil)

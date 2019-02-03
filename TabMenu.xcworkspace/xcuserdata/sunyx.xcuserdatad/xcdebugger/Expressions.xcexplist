@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "PushedViewController.tableView(_:numberOfRowsInSection:):WorkWithOtherViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "items.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

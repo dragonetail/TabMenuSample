@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftBaseBootstrap
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,28 +19,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         self.window = UIWindow(frame: UIScreen.main.bounds)
         if let window = self.window {
-            window.backgroundColor = UIColor.white
+            themeManager.defaultActive()
+            //themeManager.active("dark")
+            
+            window.backgroundColor = themeManager.theme.mainBackgroundColor
 
-//            let rootController = FAPanelController()
-////            rootController.configs.panFromEdge  = true
-////            rootController.configs.canLeftSwipe  = false
-//            rootController.leftPanelPosition = .back
-//            window.rootViewController = rootController
-//            rootController.center(ViewController())
-//                .left(LeftTabMenuViewController())
-//            window.makeKeyAndVisible()
-
-            let sideMenuController = SideMenuController()
-            sideMenuController.configs.tabMenuWidth = 280
+            let sideMenuController = TabMenuController()
+            sideMenuController.configs.tabMenuWidth = 240
             sideMenuController.configs.statusBarBehavior = .none
             sideMenuController.configs.position = .above
             sideMenuController.configs.direction = .left
             sideMenuController.configs.enablePanGesture = true
             sideMenuController.configs.supportedOrientations = .portrait
             sideMenuController.configs.shouldRespectLanguageDirection = true
-            sideMenuController.configs.theme = .dark
             
-            sideMenuController.contentViewController = ViewController()
+            sideMenuController.contentViewController = TabMenuNavigationController.wrapper(PreferencesViewController())
             sideMenuController.menuViewController = LeftTabMenuViewController()
 
             window.rootViewController = sideMenuController

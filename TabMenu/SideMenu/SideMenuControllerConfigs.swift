@@ -1,17 +1,7 @@
 import Foundation
 import UIKit
 
-extension UIColor {
-    static var mirage: UIColor {
-        return UIColor(red: 0.08, green: 0.11, blue: 0.19, alpha: 1.00)
-    }
-
-    static var lobolly: UIColor {
-        return UIColor(red: 0.75, green: 0.78, blue: 0.81, alpha: 1.00)
-    }
-}
-
-extension SideMenuController {
+extension TabMenuController {
     public struct Configs {
 
         /// 状态栏动画行为。
@@ -20,7 +10,7 @@ extension SideMenuController {
         /// - slide: 状态栏向上滑出
         /// - fade: 状态栏淡出
         /// - hideOnMenu: 状态栏直接隐藏
-        public enum StatusBarBehavior {
+        public enum StatusBarBehavior: CaseIterable {
             case none
             case slide
             case fade
@@ -28,7 +18,7 @@ extension SideMenuController {
         }
 
         /// 侧栏菜单方向。
-        public enum MenuDirection {
+        public enum MenuDirection: CaseIterable {
             case left
             case right
         }
@@ -38,15 +28,10 @@ extension SideMenuController {
         /// - above: 侧栏菜单置于内容视图之上
         /// - under: 侧栏菜单置于内容视图之下
         /// - sideBySide: 侧栏菜单与内容视图同层
-        public enum MenuPosition {
+        public enum MenuPosition: CaseIterable {
             case above
             case under
             case sideBySide
-        }
-
-        public enum Theme {
-            case light
-            case dark
         }
 
         public struct Animation {
@@ -59,35 +44,34 @@ extension SideMenuController {
             public var shadowAlpha: CGFloat = 0.2
         }
 
-
         public var tabMenuWidth: CGFloat = 280
         public var position: MenuPosition = .above
         public var direction: MenuDirection = .left
         public var statusBarBehavior: StatusBarBehavior = .none
 
-        public var tabMenuBackground: UIColor = UIColor(red: 0.03, green: 0.04, blue: 0.07, alpha: 1.00)
-        public var tabMenuTextColor: UIColor = UIColor.white //External usage
-        public var contentBackground: UIColor = UIColor(red: 0.08, green: 0.11, blue: 0.19, alpha: 1.00)
-        public var contentTextColor: UIColor = UIColor.lobolly //External usage
-        public var statusBarStyle: UIStatusBarStyle = .lightContent
-
-        public var theme: Theme = .dark {
-            didSet {
-                if theme == .dark {
-                    tabMenuBackground = UIColor(red: 0.03, green: 0.04, blue: 0.07, alpha: 1.00)
-                    tabMenuTextColor = .white
-                    contentBackground = UIColor(red: 0.08, green: 0.11, blue: 0.19, alpha: 1.00)
-                    contentTextColor = .lobolly
-                    statusBarStyle = .lightContent
-                } else {
-                    tabMenuBackground = UIColor(red: 0.98, green: 0.97, blue: 0.96, alpha: 1.00)
-                    tabMenuTextColor = .black
-                    contentBackground = .white
-                    contentTextColor = .black
-                    statusBarStyle = .default
-                }
-            }
-        }
+//        public var tabMenuBackground: UIColor = UIColor(red: 0.03, green: 0.04, blue: 0.07, alpha: 1.00)
+//        public var tabMenuTextColor: UIColor = UIColor.white //External usage
+//        public var contentBackground: UIColor = UIColor(red: 0.08, green: 0.11, blue: 0.19, alpha: 1.00)
+//        public var contentTextColor: UIColor = UIColor.lobolly //External usage
+//        public var statusBarStyle: UIStatusBarStyle = .lightContent
+//
+//        public var theme: Theme = .dark {
+//            didSet {
+//                if theme == .dark {
+//                    tabMenuBackground = UIColor(red: 0.03, green: 0.04, blue: 0.07, alpha: 1.00)
+//                    tabMenuTextColor = .white
+//                    contentBackground = UIColor(red: 0.08, green: 0.11, blue: 0.19, alpha: 1.00)
+//                    contentTextColor = .lobolly
+//                    statusBarStyle = .lightContent
+//                } else {
+//                    tabMenuBackground = UIColor(red: 0.98, green: 0.97, blue: 0.96, alpha: 1.00)
+//                    tabMenuTextColor = .black
+//                    contentBackground = .white
+//                    contentTextColor = .black
+//                    statusBarStyle = .default
+//                }
+//            }
+//        }
 
 
         //是否需要遵循本地化语言的UI方向
